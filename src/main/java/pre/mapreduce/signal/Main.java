@@ -13,6 +13,16 @@ import pre.bean.Signal;
 
 import java.io.IOException;
 
+/*
+数据清洗规则
+1）抽取timestamp,imsi,lac_id,cell_id 四个字段*
+2）去除imsi中，包含特殊字符的数据条目（‘#’,’*’,’^’）*
+3）去除空间信息残缺的记录条目（imsi、lac_id、cell_id中为空）*
+4）timestamp时间戳转换格式 ‘20190603000000’--年月日时分秒*
+5）去除干扰数据条目（不是2018.10.03当天的数据）*
+6）去除两数据源关联后经纬度为空的数据条目
+7）以人为单位，按时间正序排序
+ */
 public class Main {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -38,8 +48,21 @@ public class Main {
                 //获取一行数据
                 String line = value.toString();
                 Signal o = Parser.parser(line);
+                //去除空间信息残缺的记录条目（imsi、lac_id、cell_id中为空）
+                if (o.getImsi().trim().isEmpty() || o.getLacId().trim().isEmpty() || o.getCellId().trim().isEmpty()) {
+                    return;
+                }
+                //去除imsi中，包含特殊字符的数据条目（‘#’,’*’,’^’）
+                if (o.getImsi().contains("#") || o.getImsi().contains("*") || o.getImsi().contains("^")) {
+                    return;
+                }
+                //去除干扰数据条目（不是2018.10.03当天的数据
+                if (!o.getTimestamp().contains("20181003")) {
+                    return;
+                }
                 k.set(o.toString());
                 context.write(k, v);
+
             }
         }
 
