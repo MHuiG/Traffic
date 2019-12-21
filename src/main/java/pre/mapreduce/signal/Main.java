@@ -15,11 +15,11 @@ import java.io.IOException;
 
 /*
 数据清洗规则
-1）抽取timestamp,imsi,lac_id,cell_id 四个字段*
-2）去除imsi中，包含特殊字符的数据条目（‘#’,’*’,’^’）*
-3）去除空间信息残缺的记录条目（imsi、lac_id、cell_id中为空）*
-4）timestamp时间戳转换格式 ‘20190603000000’--年月日时分秒*
-5）去除干扰数据条目（不是2018.10.03当天的数据）*
+1）抽取timestamp,imsi,lac_id,cell_id 四个字段 (Finish)
+2）去除imsi中，包含特殊字符的数据条目（‘#’,’*’,’^’）(Finish)
+3）去除空间信息残缺的记录条目（imsi、lac_id、cell_id中为空）(Finish)
+4）timestamp时间戳转换格式 ‘20190603000000’--年月日时分秒(Finish)
+5）去除干扰数据条目（不是2018.10.03当天的数据）(Finish)
 6）去除两数据源关联后经纬度为空的数据条目
 7）以人为单位，按时间正序排序
  */
